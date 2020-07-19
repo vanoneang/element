@@ -6,6 +6,7 @@
     <play-layout v-if="route.value === '#layout'"></play-layout>
     <play-containter v-if="route.value === '#containter'"></play-containter>
     <play-radio v-if="route.value === '#radio'"></play-radio>
+    <play-swicth v-if="route.value === '#swicth'"></play-swicth>
   </div>
 </template>
 
@@ -16,8 +17,9 @@
   import PlayContainter from './components/containter'
   import PlayLayout from './components/layout'
   import PlayRadio from './components/radio'
+  import PlaySwicth from './components/switch'
 
-  import hash from './hash.js'
+  import useRoute from './route'
 
   export default {
     components: {
@@ -26,11 +28,12 @@
       PlayLink,
       PlayContainter,
       PlayLayout,
-      PlayRadio
+      PlayRadio,
+      PlaySwicth
     },
     data() {
       return {
-        route: hash()
+        route: useRoute()
       };
     },
   };
