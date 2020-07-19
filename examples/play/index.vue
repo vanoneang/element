@@ -1,11 +1,11 @@
 <template>
   <div style="margin: 20px;">
-    <!-- <play-button></play-button>
-    <play-icon></play-icon>
-    <play-link></play-link>
-    <play-layout></play-layout>
-    <play-containter></play-containter> -->
-    <play-radio></play-radio>
+    <play-button v-if="route.value === '#button'"></play-button>
+    <play-icon v-if="route.value === '#icon'"></play-icon>
+    <play-link v-if="route.value === '#link'"></play-link>
+    <play-layout v-if="route.value === '#layout'"></play-layout>
+    <play-containter v-if="route.value === '#containter'"></play-containter>
+    <play-radio v-if="route.value === '#radio'"></play-radio>
   </div>
 </template>
 
@@ -16,6 +16,8 @@
   import PlayContainter from './components/containter'
   import PlayLayout from './components/layout'
   import PlayRadio from './components/radio'
+
+  import hash from './hash.js'
 
   export default {
     components: {
@@ -28,8 +30,8 @@
     },
     data() {
       return {
-        input: 'Hello Element UI!'
+        route: hash()
       };
-    }
+    },
   };
 </script>
