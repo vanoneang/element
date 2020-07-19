@@ -81,7 +81,7 @@ import Link from '../packages/link/index.js';
 // import InfiniteScroll from '../packages/infinite-scroll/index.js';
 // import PageHeader from '../packages/page-header/index.js';
 // import CascaderPanel from '../packages/cascader-panel/index.js';
-// import Avatar from '../packages/avatar/index.js';
+import Avatar from '../packages/avatar/index.js';
 // import Drawer from '../packages/drawer/index.js';
 // import Popconfirm from '../packages/popconfirm/index.js';
 // import locale from 'element-ui/src/locale';
@@ -155,14 +155,14 @@ const components = [
   Footer,
   // Timeline,
   // TimelineItem,
-  Link
+  Link,
   // Divider,
   // Image,
   // Calendar,
   // Backtop,
   // PageHeader,
   // CascaderPanel,
-  // Avatar,
+  Avatar
   // Drawer,
   // Popconfirm,
   // CollapseTransition
@@ -288,7 +288,7 @@ export default {
   Footer,
   // Timeline,
   // TimelineItem,
-  Link
+  Link,
   // Divider,
   // Image,
   // Calendar,
@@ -296,7 +296,7 @@ export default {
   // InfiniteScroll,
   // PageHeader,
   // CascaderPanel,
-  // Avatar,
+  Avatar
   // Drawer,
   // Popconfirm
 };

@@ -1,7 +1,24 @@
-<script>
+<template>
+  <span :class="avatarClass" :style="sizeStyle">
+    <img
+      v-if="isImageExist && src"
+      :src="src"
+      :onError="handleError"
+      :alt="alt"
+      :srcSet="srcSet"
+      :style="imgStyle"
+    />
+    <i v-else-if="icon" :class="icon" />
+    <slot v-else></slot>
+  </span>
+</template>
+ <script>
+import {
+  ref, computed
+} from 'vue';
+
 export default {
   name: 'ElAvatar',
-
   props: {
     size: {
       type: [Number, String],
@@ -29,16 +46,36 @@ export default {
       default: 'cover'
     }
   },
+  setup(props) {
+    let isImageExist = ref(true);
+    let sizeStyle = ref({});
+    let imgStyle = ref({});
 
-  data() {
-    return {
-      isImageExist: true
-    };
-  },
+    function handleError() {
+      const { error } = props;
+      const errorFlag = error ? error() : undefined;
+      if (errorFlag !== false) {
+        isImageExist = false;
+      }
+    }
 
-  computed: {
-    avatarClass() {
-      const { size, icon, shape } = this;
+    sizeStyle = computed(
+      () => {
+        const { size } = props;
+        return typeof size === 'number' ? {
+          height: `${size}px`,
+          width: `${size}px`,
+          lineHeight: `${size}px`
+        } : {};
+      }
+    );
+
+    imgStyle = computed(() => {
+      return { 'object-fit': props.fit };
+    });
+
+    const avatarClass = computed(() => {
+      const { size, icon, shape } = props;
       let classList = ['el-avatar'];
 
       if (size && typeof size === 'string') {
@@ -54,54 +91,16 @@ export default {
       }
 
       return classList.join(' ');
-    }
-  },
-
-  methods: {
-    handleError() {
-      const { error } = this;
-      const errorFlag = error ? error() : undefined;
-      if (errorFlag !== false) {
-        this.isImageExist = false;
-      }
-    },
-    renderAvatar() {
-      const { icon, src, alt, isImageExist, srcSet, fit } = this;
-
-      if (isImageExist && src) {
-        return <img
-          src={src}
-          onError={this.handleError}
-          alt={alt}
-          srcSet={srcSet}
-          style={{ 'object-fit': fit }}/>;
-      }
-
-      if (icon) {
-        return (<i class={icon} />);
-      }
-
-      return this.$slots.default;
-    }
-  },
-
-  render() {
-    const { avatarClass, size } = this;
-
-    const sizeStyle = typeof size === 'number' ? {
-      height: `${size}px`,
-      width: `${size}px`,
-      lineHeight: `${size}px`
-    } : {};
-
-    return (
-      <span class={ avatarClass } style={ sizeStyle }>
-        {
-          this.renderAvatar()
-        }
-      </span>
-    );
+    });
+    return {
+      isImageExist,
+      handleError,
+      sizeStyle,
+      avatarClass,
+      imgStyle
+    };
   }
-
 };
+
 </script>
+

@@ -7,6 +7,7 @@
     <play-containter v-if="route.value === '#containter'"></play-containter>
     <play-radio v-if="route.value === '#radio'"></play-radio>
     <play-swicth v-if="route.value === '#swicth'"></play-swicth>
+    <play-avatar ></play-avatar>
   </div>
 </template>
 
@@ -18,6 +19,7 @@
   import PlayLayout from './components/layout'
   import PlayRadio from './components/radio'
   import PlaySwicth from './components/switch'
+  import PlayAvatar from './components/atvatar'
 
   import useRoute from './route'
 
@@ -29,7 +31,8 @@
       PlayContainter,
       PlayLayout,
       PlayRadio,
-      PlaySwicth
+      PlaySwicth,
+      PlayAvatar
     },
     data() {
       return {

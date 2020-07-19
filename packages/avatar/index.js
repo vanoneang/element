@@ -1,8 +1,8 @@
-import Avatar from './src/main';
+import ElAvatar from './src/main';
 
 /* istanbul ignore next */
-Avatar.install = function(Vue) {
-  Vue.component(Avatar.name, Avatar);
+ElAvatar.install = function(Vue) {
+  Vue.component(ElAvatar.name, ElAvatar);
 };
 
-export default Avatar;
+export default ElAvatar;
