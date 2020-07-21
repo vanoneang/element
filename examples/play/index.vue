@@ -7,7 +7,7 @@
     <play-containter v-if="route.value === '#containter'"></play-containter>
     <play-radio v-if="route.value === '#radio'"></play-radio>
     <play-swicth v-if="route.value === '#swicth'"></play-swicth>
-    <play-avatar ></play-avatar>
+    <play-avatar v-if="route.value === '#avatar'"></play-avatar>
   </div>
 </template>
 

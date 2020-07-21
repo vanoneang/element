@@ -1,7 +1,6 @@
 <template>
   <button
     class="el-button"
-    @click="handleClick"
     :disabled="buttonDisabled || loading"
     :autofocus="autofocus"
     :type="nativeType"
@@ -23,8 +22,9 @@
   </button>
 </template>
 <script>
+  import { inject, computed } from 'vue';
   import { useELEMENT } from '../../../src/index';
-  
+
   export default {
     name: 'ElButton',
 
@@ -59,23 +59,26 @@
       circle: Boolean
     },
 
-    computed: {
-      _elFormItemSize() {
-        return (this.elFormItem || {}).elFormItemSize;
-      },
-      buttonSize() {
-        const ELEMENT = useELEMENT();
-        return this.size || this._elFormItemSize || (ELEMENT || {}).size;
-      },
-      buttonDisabled() {
-        return this.disabled || (this.elForm || {}).disabled;
-      }
-    },
+    setup(props, ctx) {
+      const ELEMENT = useELEMENT();
+      const elForm = inject('elForm', '');
+      const elFormItem = inject('elFormItem', '');
 
-    methods: {
-      handleClick(evt) {
-        this.$emit('click', evt);
-      }
+      const _elFormItemSize = computed(() => {
+        return (elFormItem || {}).elFormItemSize;
+      });
+      const buttonSize = computed(() => {
+        return props.size || _elFormItemSize.value || (ELEMENT || {}).size;
+      });
+      const buttonDisabled = computed(() => {
+        return props.disabled || (elForm || {}).disabled;
+      });
+
+      return {
+        buttonSize,
+        buttonDisabled
+      };
     }
+
   };
 </script>
