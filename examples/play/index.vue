@@ -8,6 +8,7 @@
     <play-radio v-if="route.value === '#radio'"></play-radio>
     <play-swicth v-if="route.value === '#swicth'"></play-swicth>
     <play-avatar v-if="route.value === '#avatar'"></play-avatar>
+    <play-input v-if="route.value === '#input'"></play-input>
   </div>
 </template>
 
@@ -20,6 +21,7 @@
   import PlayRadio from './components/radio'
   import PlaySwicth from './components/switch'
   import PlayAvatar from './components/atvatar'
+  import PlayInput from './components/input'
 
   import useRoute from './route'
 
@@ -32,7 +34,8 @@
       PlayLayout,
       PlayRadio,
       PlaySwicth,
-      PlayAvatar
+      PlayAvatar,
+      PlayInput
     },
     data() {
       return {
