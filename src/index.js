@@ -21,7 +21,7 @@ import RadioButton from '../packages/radio-button/index.js';
 // import CheckboxButton from '../packages/checkbox-button/index.js';
 // import CheckboxGroup from '../packages/checkbox-group/index.js';
 import Switch from '../packages/switch/index.js';
-// import Select from '../packages/select/index.js';
+import Select from '../packages/select/index.js';
 // import Option from '../packages/option/index.js';
 // import OptionGroup from '../packages/option-group/index.js';
 import Button from '../packages/button/index.js';
@@ -40,7 +40,7 @@ import Button from '../packages/button/index.js';
 // import FormItem from '../packages/form-item/index.js';
 // import Tabs from '../packages/tabs/index.js';
 // import TabPane from '../packages/tab-pane/index.js';
-// import Tag from '../packages/tag/index.js';
+import Tag from '../packages/tag/index.js';
 // import Tree from '../packages/tree/index.js';
 // import Alert from '../packages/alert/index.js';
 // import Notification from '../packages/notification/index.js';
@@ -107,7 +107,7 @@ const components = [
   // CheckboxButton,
   // CheckboxGroup,
   Switch,
-  // Select,
+  Select,
   // Option,
   // OptionGroup,
   Button,
@@ -125,7 +125,7 @@ const components = [
   // FormItem,
   // Tabs,
   // TabPane,
-  // Tag,
+  Tag,
   // Tree,
   // Alert,
   // Slider,
@@ -237,7 +237,7 @@ export default {
   // CheckboxButton,
   // CheckboxGroup,
   Switch,
-  // Select,
+  Select,
   // Option,
   // OptionGroup,
   Button,
@@ -256,7 +256,7 @@ export default {
   // FormItem,
   // Tabs,
   // TabPane,
-  // Tag,
+  Tag,
   // Tree,
   // Alert,
   // Notification,

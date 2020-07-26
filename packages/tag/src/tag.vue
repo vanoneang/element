@@ -1,4 +1,7 @@
 <script>
+  import { computed, h } from 'vue';
+  import {useELEMENT} from '../../../src';
+
   export default {
     name: 'ElTag',
     props: {
@@ -17,42 +20,42 @@
         }
       }
     },
-    methods: {
-      handleClose(event) {
+
+    setup(props, ctx) {
+      const ELEMENT = useELEMENT();
+
+      const tagSize = computed(() => {
+        return props.size || (ELEMENT || {}).size;
+      });
+
+      const handleClose = (event) => {
+        console.log('eee');
         event.stopPropagation();
-        this.$emit('close', event);
-      },
-      handleClick(event) {
-        this.$emit('click', event);
-      }
-    },
-    computed: {
-      tagSize() {
-        return this.size || (this.$ELEMENT || {}).size;
-      }
-    },
-    render(h) {
-      const { type, tagSize, hit, effect } = this;
+        ctx.emit('close', event);
+      };
+
+      const handleClick = (event) => ctx.emit('click', event);
+
       const classes = [
         'el-tag',
-        type ? `el-tag--${type}` : '',
-        tagSize ? `el-tag--${tagSize}` : '',
-        effect ? `el-tag--${effect}` : '',
-        hit && 'is-hit'
+        props.type ? `el-tag--${props.type}` : '',
+        tagSize.value ? `el-tag--${tagSize.value}` : '',
+        props.effect ? `el-tag--${props.effect}` : '',
+        props.hit && 'is-hit'
       ];
-      const tagEl = (
-        <span
-          class={ classes }
-          style={{ backgroundColor: this.color }}
-          on-click={ this.handleClick }>
-          { this.$slots.default }
-          {
-            this.closable && <i class="el-tag__close el-icon-close" on-click={ this.handleClose }></i>
-          }
-        </span>
-      );
 
-      return this.disableTransitions ? tagEl : <transition name="el-zoom-in-center">{ tagEl }</transition>;
+      const tagEl = h('span', {
+        class: classes,
+        style: {backgroundColor: props.color},
+        onClick: handleClick
+      }, [ctx.slots.default(), props.closable && h('i', {
+        class: 'el-tag__close el-icon-close',
+        onClick: handleClose
+      })]);
+
+      return () => props.disableTransitions ? tagEl : h('transition', {
+        name: 'el-zoom-in-center'
+      }, [tagEl]);
     }
   };
 </script>
