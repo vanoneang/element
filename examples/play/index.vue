@@ -8,7 +8,7 @@
     <play-radio v-if="route.value === '#radio'"></play-radio>
     <play-switch v-if="route.value === '#switch'"></play-switch>
     <play-avatar v-if="route.value === '#avatar'"></play-avatar>
-    <play-select v-if="route.value === '#select'"></play-select>
+    <!-- <play-select v-if="route.value === '#select'"></play-select> -->
     <play-tag v-if="route.value === '#tag'"></play-tag>
   </div>
 </template>
@@ -22,7 +22,7 @@
   import PlayRadio from './components/radio'
   import PlaySwitch from './components/switch'
   import PlayAvatar from './components/atvatar'
-  import PlaySelect from './components/select'
+  // import PlaySelect from './components/select'
   import PlayTag from './components/tag'
 
   import useRoute from './route'
@@ -37,7 +37,7 @@
       PlayRadio,
       PlaySwitch,
       PlayAvatar,
-      PlaySelect,
+      // PlaySelect,
       PlayTag
     },
     data() {
