@@ -64,6 +64,8 @@
     setup(props, ctx) {
   
       const instance = getCurrentInstance();
+
+      console.log('parent', instance.parent);
       const ELEMENT = useELEMENT();
       const elForm = inject('elForm', '');
       const elFormItem = inject('elFormItem', '');
