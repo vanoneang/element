@@ -19,76 +19,82 @@
   </transition>
 </template>
 
-<script type="text/babel">
-  const TYPE_CLASSES_MAP = {
-    'success': 'el-icon-success',
-    'warning': 'el-icon-warning',
-    'error': 'el-icon-error'
-  };
-  export default {
-    name: 'ElAlert',
+<script>
+import { computed, ref } from 'vue';
+const TYPE_CLASSES_MAP = {
+  'success': 'el-icon-success',
+  'warning': 'el-icon-warning',
+  'error': 'el-icon-error'
+};
+export default {
+  name: 'ElAlert',
 
-    props: {
-      title: {
-        type: String,
-        default: ''
-      },
-      description: {
-        type: String,
-        default: ''
-      },
-      type: {
-        type: String,
-        default: 'info'
-      },
-      closable: {
-        type: Boolean,
-        default: true
-      },
-      closeText: {
-        type: String,
-        default: ''
-      },
-      showIcon: Boolean,
-      center: Boolean,
-      effect: {
-        type: String,
-        default: 'light',
-        validator: function(value) {
-          return ['light', 'dark'].indexOf(value) !== -1;
-        }
+  props: {
+    title: {
+      type: String,
+      default: ''
+    },
+    description: {
+      type: String,
+      default: ''
+    },
+    type: {
+      type: String,
+      default: 'info',
+      validator(val) {
+        return ['success', 'warning', 'error', 'info'].includes(val);
       }
     },
-
-    data() {
-      return {
-        visible: true
-      };
+    closable: {
+      type: Boolean,
+      default: true
     },
-
-    methods: {
-      close() {
-        this.visible = false;
-        this.$emit('close');
-      }
+    closeText: {
+      type: String,
+      default: ''
     },
-
-    computed: {
-      typeClass() {
-        return `el-alert--${ this.type }`;
-      },
-
-      iconClass() {
-        return TYPE_CLASSES_MAP[this.type] || 'el-icon-info';
-      },
-
-      isBigIcon() {
-        return this.description || this.$slots.default ? 'is-big' : '';
-      },
-
-      isBoldTitle() {
-        return this.description || this.$slots.default ? 'is-bold' : '';
+    showIcon: Boolean,
+    center: Boolean,
+    effect: {
+      type: String,
+      default: 'light',
+      validator: function(value) {
+        return ['light', 'dark'].indexOf(value) !== -1;
       }
     }
-  };
+  },
+  setup(props, ctx) {
+    let visible = ref(true);
+    const { type, description } = props;
+    const typeClass = computed(() => {
+      return `el-alert--${ type }`;
+    });
+
+    const iconClass = computed(() => {
+      return TYPE_CLASSES_MAP[type] || 'el-icon-info';
+    });
+
+    const isBigIcon = computed(() => {
+      return description || ctx.slots.default ? 'is-big' : '';
+    });
+
+    const isBoldTitle = computed(() => {
+      return description || ctx.slots.default ? 'is-bold' : '';
+    });
+
+    const close = () => {
+      visible.value = false;
+      ctx.emit('close');
+    };
+
+    return {
+      typeClass,
+      iconClass,
+      isBigIcon,
+      isBoldTitle,
+      visible,
+      close
+    };
+  }
+};
 </script>
