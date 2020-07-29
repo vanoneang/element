@@ -10,6 +10,7 @@
     <play-avatar v-if="route.value === '#avatar'"></play-avatar>
     <!-- <play-select v-if="route.value === '#select'"></play-select> -->
     <play-tag v-if="route.value === '#tag'"></play-tag>
+    <play-alert v-if="route.value === '#alert'"></play-alert>
   </div>
 </template>
 
@@ -24,6 +25,7 @@
   import PlayAvatar from './components/atvatar'
   // import PlaySelect from './components/select'
   import PlayTag from './components/tag'
+  import PlayAlert from './components/alert'
 
   import useRoute from './route'
 
@@ -38,7 +40,8 @@
       PlaySwitch,
       PlayAvatar,
       // PlaySelect,
-      PlayTag
+      PlayTag,
+      PlayAlert
     },
     data() {
       return {
