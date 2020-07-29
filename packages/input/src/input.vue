@@ -17,7 +17,9 @@
     <div class="el-input-group__prepend" v-if="$slots.prepend">
       <slot name="prepend"></slot>
     </div>
-    <input :tabindex="tabindex" v-if="type !== 'textarea'" class="el-input__inner" v-bind="$attrs" :type="showPassword ? (passwordVisible ? 'text': 'password') : type" :disabled="inputDisabled" :readonly="readonly" :autocomplete="autoComplete || autocomplete" ref="input" @compositionstart="handleCompositionStart" @compositionupdate="handleCompositionUpdate" @compositionend="handleCompositionEnd" @input="handleInput" @focus="handleFocus" @blur="handleBlur" @change="handleChange" :aria-label="label">
+    <input :tabindex="tabindex" v-if="type !== 'textarea'" class="el-input__inner"  :type="showPassword ? (passwordVisible ? 'text': 'password') : type" :disabled="inputDisabled" :readonly="readonly" :autocomplete=" 
+    
+    autocomplete" ref="input" @compositionstart="handleCompositionStart" @compositionupdate="handleCompositionUpdate" @compositionend="handleCompositionEnd" @input="handleInput" @focus="handleFocus" @blur="handleBlur" @change="handleChange" :aria-label="label">
     <!-- 前置内容 -->
     <span class="el-input__prefix" v-if="$slots.prefix || prefixIcon">
       <slot name="prefix"></slot>
@@ -48,18 +50,20 @@
       <slot name="append"></slot>
     </div>
   </template>
-  <textarea v-else :tabindex="tabindex" class="el-textarea__inner" @compositionstart="handleCompositionStart" @compositionupdate="handleCompositionUpdate" @compositionend="handleCompositionEnd" @input="handleInput" ref="textarea" v-bind="$attrs" :disabled="inputDisabled" :readonly="readonly" :autocomplete="autoComplete || autocomplete" :style="textareaStyle" @focus="handleFocus" @blur="handleBlur" @change="handleChange" :aria-label="label">
+  <textarea v-else :tabindex="tabindex" class="el-textarea__inner" @compositionstart="handleCompositionStart" @compositionupdate="handleCompositionUpdate" @compositionend="handleCompositionEnd" @input="handleInput" ref="textarea" v-bind="$attrs" :disabled="inputDisabled" :readonly="readonly" :autocomplete=" autocomplete" :style="textareaStyle" @focus="handleFocus" @blur="handleBlur" @change="handleChange" :aria-label="label">
     </textarea>
   <span v-if="isWordLimitVisible && type === 'textarea'" class="el-input__count">{{ textLength }}/{{ upperLimit }}</span>
 </div>
 </template>
 
 <script>
-import { reactive, ref } from 'vue';
+import { reactive, ref, computed, inject } from 'vue';
 import mitt from '../../../src/mixins/emitter';
+import { useELEMENT } from '../../../src/index';
 export default {
   name: 'ElInput',
   componentName: 'ElInput',
+  inheritAttrs: false,
   props: {
     modelValue: [String, Number],
     size: String,
@@ -106,6 +110,34 @@ export default {
     let focused = ref(false);
     let isComposing = ref(false);
     let passwordVisible = ref(false);
+    let _elFormItemSize = computed(() => {
+      return (elFormItem || {}).elFormItemSize;
+    });
+    const elForm = inject('elForm', '');
+    const elFormItem = inject('elFormItem', '');
+    const $ELEMENT = useELEMENT();
+    let inputSize = computed(() => {
+      return props.size || _elFormItemSize || ($ELEMENT || {}).size;
+    });
+    const inputDisabled = computed(() => {
+      return props.disabled || (elForm || {}).disabled;
+    });
+    const isWordLimitVisible = computed(() => {
+
+    });
+    const textLength = computed(() => {
+      if (typeof props.modelValue === 'number') {
+        return String(props.modelValue).length;
+      }
+      return (props.modelValue || '').length;
+    });
+    const upperLimit = computed(() => {
+      return ctx.attrs.maxlength;
+    });
+    const inputExceed = computed(() => {
+      return isWordLimitVisible &&
+      (textLength > upperLimit);
+    });
     const handleInput = (event) => {
       if (isComposing) return;
       ctx.emit('input', props.modelValue);
@@ -119,11 +151,11 @@ export default {
           props.isWordLimitVisible;
     };
     const handleFocus = (event) => {
-      focused = true;
+      focused.value = true;
       ctx.emit('focus', event);
     };
     const handleBlur = (event) => {
-      focused = false;
+      focused.value = false;
       ctx.emit('blur', event);
       if (props.validateEvent) {
         mitt.emit('el.form.blur', props.modelValue);
@@ -142,7 +174,11 @@ export default {
       getSuffixVisible,
       handleFocus,
       handleBlur,
-      handleChange
+      handleChange,
+      inputSize,
+      inputDisabled,
+      inputExceed,
+      isWordLimitVisible
     };
   }
 };

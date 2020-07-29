@@ -1,5 +1,5 @@
 <template>
-  <el-input placeholder="Please input" v-model="input" @change="changehandle"></el-input>
+  <el-input v-model="input" placeholder="请输入内容" @change="handlechange"></el-input>
 </template>
 
 <script>
@@ -10,7 +10,7 @@ export default {
     };
   },
   methods: {
-    changehandle(value) {
+    handlechange(value) {
       console.log(value)
     },
     // inputhandle(value){
