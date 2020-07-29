@@ -10,12 +10,9 @@ export default {
     };
   },
   methods: {
-    handlechange(value) {
-      console.log(value)
-    },
-    // inputhandle(value){
-    //   console.log(value)
-    // }
+    handlechange(v) {
+      console.log(v)
+    }
   }
 }
 </script>

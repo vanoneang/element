@@ -10,6 +10,7 @@
     <play-avatar v-if="route.value === '#avatar'"></play-avatar>
     <!-- <play-select v-if="route.value === '#select'"></play-select> -->
     <play-tag v-if="route.value === '#tag'"></play-tag>
+    <play-input v-if="route.value === '#input'"></play-input>
   </div>
 </template>
 
@@ -22,12 +23,9 @@
   import PlayRadio from './components/radio'
   import PlaySwitch from './components/switch'
   import PlayAvatar from './components/atvatar'
-<<<<<<< HEAD
-  import PlayInput from './components/input'
-=======
   // import PlaySelect from './components/select'
   import PlayTag from './components/tag'
->>>>>>> 50e29b9ef32357b1521429be5e2f44aa40421127
+  import PlayInput from './components/input'
 
   import useRoute from './route'
 
@@ -39,16 +37,11 @@
       PlayContainer,
       PlayLayout,
       PlayRadio,
-<<<<<<< HEAD
-      PlaySwicth,
-      PlayAvatar,
-      PlayInput
-=======
       PlaySwitch,
       PlayAvatar,
       // PlaySelect,
-      PlayTag
->>>>>>> 50e29b9ef32357b1521429be5e2f44aa40421127
+      PlayTag,
+      PlayInput
     },
     data() {
       return {
