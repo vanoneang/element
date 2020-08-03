@@ -11,6 +11,7 @@
     <!-- <play-select v-if="route.value === '#select'"></play-select> -->
     <play-tag v-if="route.value === '#tag'"></play-tag>
     <play-alert v-if="route.value === '#alert'"></play-alert>
+    <play-rate v-if="route.value === '#rate'"></play-rate>
   </div>
 </template>
 
@@ -26,6 +27,7 @@
   // import PlaySelect from './components/select'
   import PlayTag from './components/tag'
   import PlayAlert from './components/alert'
+  import PlayRate from './components/rate'
 
   import useRoute from './route'
 
@@ -41,7 +43,8 @@
       PlayAvatar,
       // PlaySelect,
       PlayTag,
-      PlayAlert
+      PlayAlert,
+      PlayRate
     },
     data() {
       return {
