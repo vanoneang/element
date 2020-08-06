@@ -107,9 +107,13 @@ export default {
     tabindex: String,
     onChange: {
       type: Function
+    },
+    onInput: {
+      type: Function
     }
   },
   setup(props, ctx) {
+    // const modelValue = useModelWrapper(props, 'modelValue');
     const elForm = inject('elForm', '');
     const elFormItem = inject('elFormItem', '');
     const $ELEMENT = useELEMENT();
@@ -123,7 +127,7 @@ export default {
       return (elFormItem || {}).elFormItemSize;
     });
     let validateState = computed(() => {
-      return elFormItem ? elFormItem.validateState : '';
+      return elFormItem ? elFormItem.value.validateState : '';
     });
     let needStatusIcon = computed(() => {
       return elForm ? elForm.statusIcon : false;
@@ -140,7 +144,7 @@ export default {
       return merge({}, textareaCalcStyle, { resize: props.resize });
     });
     let inputSize = computed(() => {
-      return props.size || _elFormItemSize || ($ELEMENT || {}).size;
+      return props.size || _elFormItemSize.value || ($ELEMENT || {}).size;
     });
     const inputDisabled = computed(() => {
       return props.disabled || (elForm || {}).disabled;
@@ -149,24 +153,30 @@ export default {
       return props.modelValue === null || props.modelValue === undefined ? '' : String(props.modelValue);
     });
     const showClear = computed(() => {
-      props.clearable &&
-      !props.inputDisabled &&
+      return props.clearable &&
+      !inputDisabled.value &&
       !props.readonly &&
-      props.nativeInputValue &&
-      (props.focused || props.hovering);
+      nativeInputValue.value &&
+      (focused.value || hovering.value);
     });
-    // const type = computed(() => {
-    //   nextTick(() => {
-    //     setNativeInputValue();
-    //     resizeTextarea();
-    //     updateIconOffset();
-    //   });
-    // });
+    const getSuffixVisible = () => {
+      return ctx.slots.suffix ||
+          props.suffixIcon ||
+          showClear.value ||
+          props.showPassword ||
+          isWordLimitVisible.value;
+    };
+    const clear = () => {
+      ctx.emit('update:modelValue', '');
+      ctx.emit('input', '');
+      ctx.emit('change', '');
+      ctx.emit('clear');
+    };
     const showPwdVisible = computed(() => {
       return props.showPassword &&
-      !props.inputDisabled &&
+      !inputDisabled.value &&
       !props.readonly &&
-      (!!props.nativeInputValue || props.focused);
+      (!!nativeInputValue.value || focused);
     });
     const isWordLimitVisible = computed(() => {
       return props.showWordLimit &&
@@ -194,16 +204,10 @@ export default {
     };
     mitt.emit('inputSelect', select);
     const handleInput = (event) => {
-      if (isComposing) return;
-      ctx.emit('input', props.modelValue);
+      if (isComposing.value) return;
+      ctx.emit('update:modelValue', event.target.value);
+      ctx.emit('input', event.target.value);
       nextTick(setNativeInputValue);
-    };
-    const getSuffixVisible = () => {
-      return ctx.slots.suffix ||
-          props.suffixIcon ||
-          props.showClear ||
-          props.showPassword ||
-          props.isWordLimitVisible;
     };
     const handleFocus = (event) => {
       focused.value = true;
@@ -216,8 +220,15 @@ export default {
         mitt.emit('el.form.blur', props.modelValue);
       }
     };
+    const handlePasswordVisible = () => {
+      passwordVisible.value = !passwordVisible.value;
+      focus();
+    };
     const getInput = () => {
       return instance.refs.input || instance.refs.textarea;
+    };
+    const focus = () => {
+      getInput().focus();
     };
     const setNativeInputValue = () => {
       const input = getInput();
@@ -233,7 +244,7 @@ export default {
       if (!elList.length) return;
       let el = null;
       for (let i = 0; i < elList.length; i++) {
-        if (elList[i].parentNode === this.$el) {
+        if (elList[i].parentNode === instance.ctx.$el) {
           el = elList[i];
           break;
         }
@@ -259,7 +270,7 @@ export default {
       if (ctx.isServer) return;
       const { autosize, type } = props;
       if (type !== 'textarea') return;
-      if (!autosize) {
+      if (!props.autosize) {
         textareaCalcStyle = {
           minHeight: calcTextareaHeight(instance.refs.textarea).minHeight
         };
@@ -269,20 +280,23 @@ export default {
       const maxRows = autosize.maxRows;
       textareaCalcStyle = calcTextareaHeight(instance.refs.textarea, minRows, maxRows);
     };
+    // const useModelWrapper = (props, name = 'modelValue') => {
+    //   return computed({
+    //     get: () => props[name],
+    //     set: (value) => ctx.emit(`update:${name}`, value)
+    //   });
+    // };
     onMounted(() => {
       setNativeInputValue();
       resizeTextarea();
       updateIconOffset();
     });
-    // watch(props.modelValue, () => {
-    //   nextTick(resizeTextarea);
-    //   if (props.validateEvent) {
-    //     mitt.emit('el.form.change', [props.modelValue]);
-    //   }
-    // });
     watch(nativeInputValue, () => {
       setNativeInputValue();
     });
+    // watch(modelValue, () => {
+    //   console.log(modelValue);
+    // });
     return {
       textareaCalcStyle,
       hovering,
@@ -303,7 +317,10 @@ export default {
       textareaStyle,
       nativeInputValue,
       showClear,
-      showPwdVisible
+      showPwdVisible,
+      validateState,
+      clear,
+      handlePasswordVisible
     };
   }
 };
